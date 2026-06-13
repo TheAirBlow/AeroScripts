@@ -1,4 +1,23 @@
-#!/usr/bin/env python3
+#!/usr/bin/env bash
+""":"
+if [ -L "$0" ]; then
+    real_path=$(readlink -f "$0")
+else
+    real_path="$0"
+fi
+
+script_dir=$(dirname "$real_path")
+venv_python="$script_dir/venv/bin/python"
+
+if [ -x "$venv_python" ]; then
+    exec "$venv_python" "$real_path" "$@"
+else
+    echo "[!] WARNING: venv does not exist, falling back to system Python installation." >&2
+    echo "[!] Please run setup.sh in the Scripts directory to properly set everything up." >&2
+    exec /usr/bin/env python3 "$real_path" "$@"
+fi
+"""
+
 # 1. fixes broken unicode filenames and directory names e.g. mojibale from incorrectly extracted archives
 # 2. fixes uppercase extensions and forces them to lowercase to make sure everything works correctly with e.g. scompress
 # 3. renames .jpe and .jfif to .jpeg for better compatibility

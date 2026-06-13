@@ -1,0 +1,13 @@
+discord.py
+yt-dlp
+mutagen
+Pillow
+PyGithub
+scikit-image
+numpy
+opencv-python
+ImageHash
+tqdm
+adbutils
+aiohttp
+google-auth-oauthlib
