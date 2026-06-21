@@ -9,5 +9,3 @@ opencv-python
 ImageHash
 tqdm
 adbutils
-aiohttp
-google-auth-oauthlib
