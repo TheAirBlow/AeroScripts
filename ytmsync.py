@@ -59,7 +59,7 @@ def add_metadata(video_path, thumb_path, title, author):
         bottom = (height + min_dimension) / 2
         cropped_img = img.crop((left, top, right, bottom))
         img_byte_arr = io.BytesIO()
-        cropped_img.save(img_byte_arr, format='JPEG')
+        cropped_img.convert('RGB').save(img_byte_arr, format='JPEG')
         img_byte_arr = img_byte_arr.getvalue()
 
     if video_path.suffix == ".mp3":
@@ -85,6 +85,10 @@ def add_metadata(video_path, thumb_path, title, author):
 os.makedirs(args.output, exist_ok=True)
 
 ydl_opts = {
+    'js_runtimes': {
+        'deno': {},
+    },
+    'remote_components': {'ejs:github'},
     'extractor_args': {
         'youtube': {
             'player_client': ['web'],
