@@ -9,3 +9,5 @@ opencv-python
 ImageHash
 tqdm
 adbutils
+requests[socks]
+ijson

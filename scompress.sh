@@ -18,12 +18,20 @@ if [ "$1" != "--skip-warning" ]; then
   fi
 fi
 
-for file in $(find . -type f -name "*.png" -o -name "*.jpg" -o -name "*.jpe" -o -name "*.jpeg" -o -name "*.jfif"); do
-  new=${file%.*}.webp
+find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpe" -o -name "*.jpeg" -o -name "*.jfif" \) -print0 | \
+xargs -0 -P 8 -I {} bash -c '
+  file="{}"
+  new="${file%.*}.webp"
+  temp="${file}_tmp.png"
   echo "$file -> $new"
-  magick "$file" -quality 80 -strip -resize 1920x1080\> "$new"
-  rm "$file"
-done
+
+  magick "$file" -resize 1920x1080\> "$temp"
+  cwebp -q 90 -m 0 -quiet -mt "$temp" -o "$new"
+
+  if [ $? -eq 0 ]; then
+    rm "$file" "$temp"
+  fi
+'
 
 for file in $(find . -type f -name "*.gif"); do
   new=${file%.*}.webp
